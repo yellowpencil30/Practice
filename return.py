@@ -9,3 +9,5 @@ def func(p):
         func(p) = func(p-1) + func(p-1) + '00000' + func(p-1) + func(p-1)
 
 print(func(0))
+
+blahblah
