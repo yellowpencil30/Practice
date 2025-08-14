@@ -29,4 +29,4 @@ result_list.sort(reverse=True)
 print(result_list)
 
 # 아니면 일일이 하고 0 나오면 바로 넘어가게
-# 뭐가 더 빠르지
+# 이렇게 하면 올라감?
