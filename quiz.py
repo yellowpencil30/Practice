@@ -1,24 +1,3 @@
-def remove(l, x):
-    for k in l:
-        if (k%x == 0 and k != x):
-            l.remove(k)
-
-def factorization(n):
-    list = [x for x in range(2, round(n**1/2))]
-    remove(list, 2)
-    remove(list, 3)
-    list.append(n)
-    k = 0
-    final_list = []
-    while n != 1:
-        if n % list[k] == 0:
-            final_list.append(list[k])
-            remove(list, list[k])
-            n = n / list[k] 
-        else:
-            remove(list, list[k])
-            del list[k]
-    final_list.sort(reverse=True)
-    return final_list[0]
-
-factorization(600851475143)
+#> 앞에서부터 읽을 때나 뒤에서부터 읽을 때나 모양이 같은 수를 대칭수(palindrome)라고 부릅니다.
+#  두 자리 수를 곱해 만들 수 있는 대칭수 중 가장 큰 수는 **9009** (= 91 × 99) 입니다.
+#  세 자리 수를 곱해 만들 수 있는 가장 큰 대칭수는 얼마입니까?
