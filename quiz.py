@@ -8,9 +8,15 @@
 # c > 334
 # 삼각형이랑 연결해볼까? 너무 돌아가는 것 같긴 한데..
 
-def find_pytha(a,b):
-    if 1000*a + 1000*b - a*b = 500000
-        print(f"{a,b}는 맞아요! c는{1000-a-b}이고 답은 {a*b*c}!")
-    else:
-        print("아니에요")
-        return False
+def is_pytha(a,b, c):
+    return(a**2 + b**2 == c**2)
+
+def find_pytha(n):
+    for c in range(n//3, n//2):
+        for a in range(1, (n-c)/2):
+            b = 1000-c-a
+            if is_pytha(a,b,c):
+                return a*b*c
+
+
+print(find_pytha(1000))
