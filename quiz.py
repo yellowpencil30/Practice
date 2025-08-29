@@ -8,14 +8,11 @@ def is_prime(n):
         return True
     if n%2 ==0:
         return False
-    else:
-        for a in range(2, round(n**1/2)):
-            if n % a != 0:
-                a +=1
-            else: 
-                return False
-        return True    
-
+    for a in range(3, int(n**1/2)+2, 2):
+        if n % a == 0:
+            return False
+    return True
+            
 def get_prime(list, maximum_num):
     result = 1
     for a in list:
