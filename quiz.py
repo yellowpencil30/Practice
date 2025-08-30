@@ -1,22 +1,25 @@
-#세 자연수 a, b, c 가 피타고라스 정리 a2 + b2 = c2 를 만족하면 피타고라스 수라고 부릅니다 (여기서 a < b < c ).
-#예를 들면 32 + 42 = 9 + 16 = 25 = 52이므로 3, 4, 5는 피타고라스 수입니다.
-#a + b + c = 1000 인 피타고라스 수 a, b, c는 한 가지 뿐입니다. 이 때, a × b × c 는 얼마입니까?
+# 10 이하의 소수를 모두 더하면 2 + 3 + 5 + 7 = 17 이 됩니다.
+# 이백만(2,000,000) 이하 소수의 합은 얼마입니까?
 
+# 검사수를 어떻게 줄이지?
 
-# 3,4,5 // 6, 8, 10
-# a + b > c
-# c > 334
-# 삼각형이랑 연결해볼까? 너무 돌아가는 것 같긴 한데..
+def is_prime(n):
+    if n == 1:
+        return False
+    if n == 2:
+        return True
+    if n%2 ==0:
+        return False
+    for a in range(3, int(n**1/2)+2, 2):
+        if n % a == 0:
+            return False
+    return True
 
-def is_pytha(a,b, c):
-    return(a**2 + b**2 == c**2)
+sum = 2
 
-def find_pytha(n):
-    for c in range(n//3, n//2):
-        for a in range(1, (n-c)/2):
-            b = 1000-c-a
-            if is_pytha(a,b,c):
-                return a*b*c
+for a in range(3, 2000001, 2):
+    if is_prime(a):
+        sum+=a
+        print(a)
 
-
-print(find_pytha(1000))
+print(sum)
