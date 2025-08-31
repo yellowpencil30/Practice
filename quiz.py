@@ -15,11 +15,10 @@ def is_prime(n):
             return False
     return True
 
-sum = 2
-
-for a in range(3, 2000001, 2):
-    if is_prime(a):
-        sum+=a
-        print(a)
-
-print(sum)
+possible_list =[]
+prime_list = [2,3,5,7]
+for n in range(2000000):
+    possible_list.append(True)
+for m in prime_list:
+    for l in range(m, 2000000, m):
+        possible_list[l] = False
