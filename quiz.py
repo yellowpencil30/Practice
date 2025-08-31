@@ -15,10 +15,16 @@ def is_prime(n):
             return False
     return True
 
-possible_list =[]
+num_list =[]
 prime_list = [2,3,5,7]
 for n in range(2000000):
-    possible_list.append(True)
+    num_list.append(True)
 for m in prime_list:
     for l in range(m, 2000000, m):
-        possible_list[l] = False
+        num_list[l] = False
+possible_list =[x for x,y in enumerate(num_list) if y]
+sum = 17
+for z in possible_list:
+    if is_prime(z):
+        sum+= z
+print(sum)
