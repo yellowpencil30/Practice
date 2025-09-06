@@ -23,3 +23,10 @@
 
 # 위에서 대각선 방향으로 연속된 붉은 수 네 개의 곱은 26 × 63 × 78 × 14 = 1788696 입니다.
 # 그러면 수평, 수직, 또는 대각선 방향으로 연속된 수 네 개의 곱 중 최댓값은 얼마입니까?
+
+whole_num_list = []
+with open(r'C:\Users\aaa\Desktop\PythonWorkspace\Practice\num.txt', 'r', encoding='utf-8') as f:
+    # 여기가 핵심! 한 줄 씩 리스트로 반환하는 기능이 있음
+    lines = f.readlines()
+    for line in lines:
+        whole_num_list.append((line.strip().split(' ')))
