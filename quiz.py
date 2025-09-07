@@ -30,3 +30,47 @@ with open(r'C:\Users\aaa\Desktop\PythonWorkspace\Practice\num.txt', 'r', encodin
     lines = f.readlines()
     for line in lines:
         whole_num_list.append((line.strip().split(' ')))
+
+largest = 1
+
+def horizontal_multiplier(list, largest_num):
+    for a in list:
+        for b in range(17):
+            result = 1
+            result *= int(a[b]) * int(a[b+1]) * int(a[b+2]) * int(a[b+3])
+            if result > largest_num:
+                largest_num = result
+    return largest_num
+
+def vertical_multiplier(list, largest_num):
+    for x in range(20):
+        result = 1
+        for y in range(17):
+            result = int(list[y][x]) * int(list[y+1][x]) * int(list[y+2][x]) * int(list[y+3][x])
+        if result > largest_num:
+            largest_num = result
+    return largest_num
+
+# 우하향 대각선
+def diagonal_multiplier(list, largest_num):
+    for A in range(17):
+        for a in range(17):
+            result = int(list[A][a]) * int(list[A+1][a+1]) * int(list[A+2][a+2]) * int(list[A+3][a+3])
+            if result > largest_num:    
+                largest_num = result
+    return largest_num
+
+def diagonal_multiplier_2(list, largest_num):
+    for A in range(17):
+        for a in range(19, 2, -1):
+            result = int(list[A][a]) * int(list[A+1][a-1]) * int(list[A+2][a-2]) * int(list[A+3][a-3])
+            if result > largest_num:    
+                largest_num = result
+    return largest_num
+
+
+HLN = horizontal_multiplier(whole_num_list, largest)
+VLN = vertical_multiplier(whole_num_list, HLN)
+DLN = diagonal_multiplier(whole_num_list, VLN)
+DLN_2 = diagonal_multiplier_2(whole_num_list, DLN)
+print(DLN_2)
