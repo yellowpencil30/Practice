@@ -2,3 +2,9 @@
 # 그러면 20 × 20 격자에는 모두 몇 개의 경로가 있습니까?
 
 # 계단 문제인 거 같은데?
+
+def sum_rule(list):
+    n_list = []
+    for a in range(len(list)-1):
+        n_list.append(list[a]+list[a+1])
+    return n_list

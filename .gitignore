@@ -1,0 +1,6 @@
+# PyInstaller가 생성하는 폴더들
+build/
+dist/
+*.spec
+*.exe
+*.pkg
