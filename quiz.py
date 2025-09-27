@@ -1,46 +1,79 @@
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Flatten, Dense
+import numpy as np
 import matplotlib.pyplot as plt
 
-mnist = tf.keras.datasets.mnist
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# 데이터 가져오기 + 레이블 재설정
+fashion_mnist = tf.keras.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-x_train, x_test = x_train / 255.0, x_test / 255.0
-
-# 모델 설계
-model = Sequential([
-    # 항상 이 순서인가?
-    Flatten(input_shape =(28, 28)),
-    Dense(128, activation = 'relu'),
-    # 은닉층과 출력층을 따로 구분할 필요가 없는가? 그러면 하나 더 추가해도 됨?
-    Dense(10, activation = 'softmax')
-])
-
-# 모델 설정
-model.compile(optimizer='adam',
-              loss = 'sparse_categorical_crossentropy',
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+# 데이터 전처리. 값을 0~1로 만들기
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+# 모델 설계. 레이어 구성
+model = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape = (28,28)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10)
+    ])
+# 모델 설정. 최적화, 손실, 평가
+model.compile(optimizer = 'adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics = ['accuracy'])
+# 학습. 무엇을 넣는가. 에포크
+model.fit(train_images, train_labels, epochs = 10)
 
-print('모델 학습을 시작합니다')
-history = model.fit(x_train, y_train, epochs=5, validation_split=0.2)
-print('모델 학습이 완료되었습니다.')
+# 평가. 손실, 정확도
+test_loss, tess_acc = model.evaluate(test_images, test_labels, verbose=2)
+# 예측 모델 설계
+probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])
+predictions = probability_model.predict(test_images)
 
-plt.plot(history.history['accuracy'], label = 'Training Accuracy')
-plt.plot(history.history['val_accuracy'], label = 'Validation Accuracy')
-plt.title('Model Accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend()
+# 시각화
+def plot_image(i, prediction_array, true_label, img):
+    true_label, img = true_label[i], img[i]
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.imshow(img, cmap = plt.cm.binary)
+
+    predicted_label = np.argmax(prediction_array)
+    if predicted_label == true_label:
+        color = 'blue'
+    else:
+        color = 'red'
+    
+    plt.xlabel("{} {:2.0f}% ({})".format(class_names[predicted_label], 
+                           100*np.max(prediction_array),
+                           class_names[true_label],
+                           color = color))
+
+def plot_value_array(i, predictions_array, true_labels):
+    true_labels = true_labels[i]
+    plt.xticks(range(10))
+    plt.yticks([])
+    thisplot = plt.bar(range(10), predictions_array, color = "#777777")
+    plt.ylim([0,1])
+    predicted_label = np.argmax(predictions_array)
+    thisplot[predicted_label].set_color('red')
+    thisplot[true_labels].set_color('blue')
+
+# 단일 이미지. 2차원으로 만들어야 됨.
+img = test_images[1]
+img = (np.expand_dims(img, 0))
+predictions_single = probability_model.predict(img)
+plot_value_array(1, predictions_single[0], test_labels)
 plt.show()
 
-predictions = model.predict(x_test)
-predicted_label = tf.argmax(predictions[3]).numpy()
-true_label = y_test[3]
-
-print(f"\n모델의 예측: {predicted_label}")
-print(f"실제 정답: {true_label}")
-
-plt.imshow(x_test[3], cmap='gray')
-plt.title(f"Predicted: {predicted_label}, True: {true_label}")
-plt.show()
+# num_rows = 5
+# num_cols = 3
+# num_images = num_cols * num_rows
+# plt.figure(figsize=(2*2*num_cols, 2*num_rows))
+# for i in range(num_images):
+#   plt.subplot(num_rows, 2*num_cols, 2*i+1)
+#   plot_image(i, predictions[i], test_labels, test_images)
+#   plt.subplot(num_rows, 2*num_cols, 2*i+2)
+#   plot_value_array(i, predictions[i], test_labels)
+# plt.tight_layout()
+# plt.show()
